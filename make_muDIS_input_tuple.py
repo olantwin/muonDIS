@@ -9,7 +9,8 @@ import shipunit as u
 @click.argument('inputfile')
 @click.argument('geofile')
 @click.option('-o', '--output', default='test.root')
-def makeMuonInelasticTuple(inputfile, output, geofile):
+@click.option('-v', '--volume', default='cave')
+def makeMuonInelasticTuple(inputfile, output, geofile, volume):
     fout = r.TFile.Open(output, 'recreate')
     ntuple = r.TNtuple('muons', 'muon flux VetoCounter', 'id:px:py:pz:x:y:z:w')
     logVols = detMap(geofile)
@@ -21,7 +22,7 @@ def makeMuonInelasticTuple(inputfile, output, geofile):
                   else event.MCTrack[0].GetWeight())
         for hit in event.vetoPoint:
             detID = hit.GetDetectorID()
-            if logVols[detID] != 'cave':
+            if logVols[detID] != volume:
                 print logVols[detID]
                 continue
             pid = hit.PdgCode()
