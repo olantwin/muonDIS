@@ -37,17 +37,10 @@ def makeMuonInelasticTuple(inputfile, output, geofile, volume):
         for hit in event.vetoPoint:
             detID = hit.GetDetectorID()
             if detID>10000:
-<<<<<<< HEAD
-=======
-                continue
-            node=r.gGeoManager.FindNode(hit.GetX(),hit.GetY(),hit.GetZ())
-            if not volume in node.GetName():
->>>>>>> a6ef5357208f298f3ad2473c1c79a8a5dbb9d639
                 continue
             node=sGeo.FindNode(hit.GetX(),hit.GetY(),hit.GetZ())
             if not volume in node.GetName():
-               continue
- 
+                continue
             pid = hit.PdgCode()
             if abs(pid) != 13:
                 continue
@@ -110,11 +103,5 @@ def makeMuonInelasticTuple(inputfile, output, geofile, volume):
     fout.cd()
     ntuple.Write()
 
-
-<<<<<<< HEAD
-=======
-
-
->>>>>>> a6ef5357208f298f3ad2473c1c79a8a5dbb9d639
 if __name__ == '__main__':
     makeMuonInelasticTuple()
