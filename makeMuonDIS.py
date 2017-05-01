@@ -1,4 +1,5 @@
 #!/bin/env python2
+from timeit import default_timer
 import sys
 import time
 from array import array
@@ -6,7 +7,7 @@ import ROOT  as r
 # import click
 nJob = 2
 nMult = 10  # number of events / muon
-muonIn = 'test.root'
+muonIn = 'muConcrete.root'
 nPerJob = 100
 
 if len(sys.argv) > 1:
@@ -76,8 +77,9 @@ def main():
     # stop pythia printout during loop
     myPythia.SetMSTU(11, 11)
     print 'start production ', nStart, nEnd
-    nMade = 0
+    nMade = 0 
     for k in range(nStart, nEnd):
+        start = default_timer()
         rc = sTree.GetEvent(k)
         # make n events / muon
         px, py, pz = sTree.px, sTree.py, sTree.pz
@@ -92,8 +94,9 @@ def main():
         cphi, sphi = r.TMath.Cos(phi), r.TMath.Sin(phi)
         mu = array('d', [pid, px, py, pz, E, x, y, z, w])
         muPart = r.TVectorD(9, mu)
-        myPythia.Initialize('FIXT', mutype[pid], 'p+', p)
+        myPythia.Initialize('FIXT', mutype[pid],'p+', p )
         for _ in range(nMult):
+            if _==nMult/2:myPythia.Initialize('FIXT', mutype[pid],'n0', p ) 
             dPart.Clear()
             iMuon.Clear()
             iMuon[0] = muPart
@@ -119,6 +122,7 @@ def main():
             if nMade % 10000 == 0:
                 print 'made so far ', nMade
             dTree.Fill()
+        print"The time is :",  default_timer() - start
     fout.cd()
     dTree.Write()
     myPythia.SetMSTU(11, 6)
