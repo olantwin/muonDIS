@@ -10,8 +10,8 @@ import shipunit as u
 @click.command()
 @click.argument('inputfile')
 @click.argument('geofile')
-@click.option('-o', '--output', default='test.root')
-@click.option('-v', '--volume', default='cave')
+@click.option('-o', '--output', default='muConcrete.root')
+@click.option('-v', '--volume', default='rockD')
 def makeMuonInelasticTuple(inputfile, output, geofile, volume):
     h = {}
     for m in ['mu', 'V0']:
@@ -25,18 +25,23 @@ def makeMuonInelasticTuple(inputfile, output, geofile, volume):
         ut.bookHist(h, 'conc_hitzy' + m, 'concrete hit zy ' + m, 100, -100.,
                     100., 100, -15., 15.)
     fout = r.TFile.Open(output, 'recreate')
-    ntuple = r.TNtuple('muons', 'muon flux VetoCounter', 'id:px:py:pz:x:y:z:w')
-    logVols = detMap(geofile)
+    ntuple = r.TNtuple('muons', 'muon flux concrete', 'id:px:py:pz:x:y:z:w')
     f = r.TFile.Open(inputfile)
     tree = f.cbmsim
+    with root_open(geofile) as fgeo:
+        sGeo = fgeo.FAIRGeom
     for event in tree:
         weight = (event.MCTrack[1].GetWeight()
                   if event.MCTrack.GetEntries() > 1
                   else event.MCTrack[0].GetWeight())
         for hit in event.vetoPoint:
             detID = hit.GetDetectorID()
-            if logVols[detID] != volume:
+            if detID>10000:
                 continue
+            node=sGeo.FindNode(hit.GetX(),hit.GetY(),hit.GetZ())
+            if not volume in node.GetName():
+               continue
+ 
             pid = hit.PdgCode()
             if abs(pid) != 13:
                 continue
@@ -98,18 +103,6 @@ def makeMuonInelasticTuple(inputfile, output, geofile, volume):
     ut.writeHists(h, output)
     fout.cd()
     ntuple.Write()
-
-
-def detMap(geofile):
-    with root_open(geofile) as fgeo:
-        sGeo = fgeo.FAIRGeom
-        detList = {}
-        volList = sGeo.GetListOfVolumes()
-        for v in volList:
-            nm = v.GetName()
-            i = sGeo.FindVolumeFast(nm).GetNumber()
-            detList[i] = nm
-        return detList
 
 
 if __name__ == '__main__':
