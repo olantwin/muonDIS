@@ -9,11 +9,10 @@ import shipunit as u
 @click.argument('inputfile')
 @click.argument('geofile')
 @click.option('-o', '--output', default='test.root')
-@click.option('-v', '--volume', default='cave')
+@click.option('-v', '--volume', default='rockD')
 def makeMuonInelasticTuple(inputfile, output, geofile, volume):
     fout = r.TFile.Open(output, 'recreate')
-    ntuple = r.TNtuple('muons', 'muon flux VetoCounter', 'id:px:py:pz:x:y:z:w')
-    logVols = detMap(geofile)
+    ntuple = r.TNtuple('muons', 'muon flux concrete', 'id:px:py:pz:x:y:z:w')
     f = r.TFile.Open(inputfile)
     tree = f.cbmsim
     for event in tree:
@@ -21,13 +20,15 @@ def makeMuonInelasticTuple(inputfile, output, geofile, volume):
                   if event.MCTrack.GetEntries() > 1
                   else event.MCTrack[0].GetWeight())
         for hit in event.vetoPoint:
-            detID = hit.GetDetectorID()
-            if logVols[detID] != volume:
-                print logVols[detID]
+            detID=hit.GetDetectorID()
+            if detID>10000:
+                continue
+            node=r.gGeoManager.FindNode(hit.GetX(),hit.GetY(),hit.GetZ())
+            if not volume in node.GetName():
                 continue
             pid = hit.PdgCode()
             if abs(pid) != 13:
-                continue
+               continue
             P = r.TMath.Sqrt(hit.GetPx()**2 + hit.GetPy()**2 + hit.GetPz()**2)
             if P > 3 / u.GeV:
                 ntuple.Fill(
@@ -42,17 +43,7 @@ def makeMuonInelasticTuple(inputfile, output, geofile, volume):
     ntuple.Write()
 
 
-def detMap(geofile):
-    with root_open(geofile) as fgeo:
-        sGeo = fgeo.FAIRGeom
-        detList = {}
-        volList = sGeo.GetListOfVolumes()
-        for v in volList:
-            nm = v.GetName()
-            i = sGeo.FindVolumeFast(nm).GetNumber()
-            detList[i] = nm
-        return detList
-
-
-if __name__ == '__main__':
+if __name__ = '__main__':
     makeMuonInelasticTuple()
+                                                                                                                     47,17         Bot
+
