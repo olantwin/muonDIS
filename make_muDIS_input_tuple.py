@@ -24,7 +24,6 @@ def makeMuonInelasticTuple(inputfile, output, geofile, volume):
         ut.bookHist(h, 'conc_pt' + m, 'concrete hit pt ' + m, 100, 0., 20.)
         ut.bookHist(h, 'conc_hitzy' + m, 'concrete hit zy ' + m, 100, -100.,
                     100., 100, -15., 15.)
-    fout = r.TFile.Open(output, 'recreate')
     ntuple = r.TNtuple('muons', 'muon flux concrete', 'id:px:py:pz:x:y:z:w')
     f = r.TFile.Open(inputfile)
     tree = f.cbmsim
@@ -100,8 +99,8 @@ def makeMuonInelasticTuple(inputfile, output, geofile, volume):
         tc.SetLogy(1)
         h['conc_p' + m].Draw()
     ut.writeHists(h, output)
-    fout.cd()
-    ntuple.Write()
+    with root_open(output, 'update'):
+        ntuple.Write()
 
 if __name__ == '__main__':
     makeMuonInelasticTuple()
