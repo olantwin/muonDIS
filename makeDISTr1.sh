@@ -20,12 +20,14 @@ if [ -f $OutputPath/$OutputFile ]; then
 else
 	if (($LSB_JOBINDEX == "89" ));then
 
-		python $InputPath/$File -f $InputPath/$InputFile -nPerJobs 5 -nJobs 0  -nDISPerMuon 10000 > out_${LSB_JOBINDEX}
-	else
-		python $InputPath/$File -f $InputPath/$InputFile -nPerJobs 5 -nJobs $LSB_JOBINDEX  -nDISPerMuon 10000 > out_${LSB_JOBINDEX}
+		python $InputPath/$File -f $InputPath/$InputFile -nPerJobs 5 -nJobs 0  -nDISPerMuon 10000 
+		mv =muonDis_0.root muonDis_${LSB_JOBINDEX}.root
 		xrdcp $OutputFile $OutputPath
-		xrdcp out_${LSB_JOBINDEX} $InputPath
 		rm  $OutputFile
-		rm out_${LSB_JOBINDEX}
+		
+	else
+		python $InputPath/$File -f $InputPath/$InputFile -nPerJobs 5 -nJobs $LSB_JOBINDEX  -nDISPerMuon 10000 
+		xrdcp $OutputFile $OutputPath
+		rm  $OutputFile
 	fi
 if
