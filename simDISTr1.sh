@@ -19,7 +19,7 @@ if [ -f $OutputPath/$OutputFile ]; then
        echo "Target exists, nothing to do."
        exit 0
 else
-	xrdcp $OutputFile/run_simScript.py .
+	xrdcp $OutputPath/run_simScript.py .
 	python  run_simScript.py --nEvents $N  --firstEvent $[$N*($LSB_JOBINDEX-1)] -f  $OutputPath/$File
 	mv ship.conical.muonDIS-TGeant4.root ship.conical.muonDIS-TGeant4_${n}_${LSB_JOBINDEX}.root
 	ls
