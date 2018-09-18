@@ -21,7 +21,7 @@ else
 	if (($LSB_JOBINDEX == "89" ));then
 
 		python $InputPath/$File -f $InputPath/$InputFile -nPerJobs 5 -nJobs 0  -nDISPerMuon 10000 
-		mv =muonDis_0.root muonDis_${LSB_JOBINDEX}.root
+		mv muonDis_0.root muonDis_${LSB_JOBINDEX}.root
 		xrdcp $OutputFile $OutputPath
 		rm  $OutputFile
 		
