@@ -17,55 +17,14 @@ Files located on my eos:/eos/experiment/ship/user/pvenkova/MuonProduction2018/Mu
 
 3.ship.conical.MuonBack-TGeant4_*_*.root      : FairShip Simulation: -- followMuon --fastMuon( the cave is sensitive,folow only muons);where the geometry is the 2018 design ( dy':10.,'dv':6,'ds':9,'nud':3,'caloDesign':3,'strawDesign':10)
 
-4.anaCavern.sh                : script to run Batch Jobs, for collection muons hitting the cavern, used to produce the ntuple muonsCavern2018.0-66000.root 
-
-3. makeMuonDIS.py			      : script to generate muonDIS interaction with Pythia using the muons hitting the Tr 1 
-4. muonDis_Tr1.root			      : 445 000 muonDIS interactions ( 445muons*10 000 interactions)
-5. muonDis_*.root			      : the same content like muonsDis_Tr1.root splited on 89 jobs. Each file contains 5muons*10 000 interactions
-6. run_simScript.py			      : need it to run FairSHiP simulation, taking as inputFile muonDis_Tr1.root, where the geometry is the 2018 design ( dy':10.,'dv':6,'ds':9,'nud':3,'caloDesign':3,'strawDesign':10)  and the DIS event is placed beetwen the begining of the Vessel until the Tr1, along the muon track according to the material density. 
-7. ship.conical.muonDIS-TGeant4_*.root	      : outputFile from FairSHiP simulation of muonDIS interactions (89 files, 50 000 events in file)
-8. ship.conical.muonDIS-TGeant4_*_rec.root    : Reconstructed data (89 files, 50 000 events in file)
-9. geofile_full.conical.MuonBack-TGeant4.root : file contain the geometry
-10.makeDISTr1.sh                              : bash script to run Job Array to generate with Pythia6 muonDIS interactions 
-11.simDISTr1.sh                               : bash script to run Job Array to run FairShip simulation
-12.recDISTr1.sh                               : bash script to run Job Array to reconstruct 
+4.anaCavern.sh                		      : script to run Batch Jobs, for collection muons hitting the cavern, used to produce the ntuple muonsCavern2018.0-66000.root 
 
 
+5.ship.conical.MuonBack-TGeant4_X_Y.root      : outputFile from FairSHiP simulation  
 
+6.geofile_full.conical.MuonBack-TGeant4.root  : file contain the geometry
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+7.simCavern.sh 				      : script to Run Batch jobs to simulate muonBackground --fasMuon --FollowMuon
 
 
 1.Run fastMuon Background simulation, no EM background, the geometry is the new 2018 layout, using as inputFile the new background Production 2018, located on:
