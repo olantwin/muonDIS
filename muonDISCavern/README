@@ -51,7 +51,16 @@ and save them in the ntuple :
 use anaCavern.sh to run Batch Jobs   
 
 
-3.Generate muon DIS events using inputFile muonsCavern2018.0-66000.root(contains 4,2e+7 muons) : 
+3.Generate muon DIS events using inputFile muonsCavern2018.0-66000.root(contains 4,2e+7 muons) : you can use the   makeMuonDIS.py on https://github.com/Plamenna/muonDIS/tree/master/
+
+use makeDISCavern.sh to generate muon DIS Events using as input /muonsCavern2018.0-66000.root
+
+the output files are : muonDis_xxxx.root , xxxx=[1,2,...,20 000], each file was running on 2087 muons from the input and produce 1 DIS
+
+!!!!!!!!!!!!!!!  i need to check if this data can be used .....
+
+
+
 
 
 
