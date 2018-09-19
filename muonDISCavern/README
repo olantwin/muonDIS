@@ -1,0 +1,101 @@
+
+===========================================================================================================================================
+MUON DIS IN THE CAVERN 
+
+===========================================================================================================================================
+For this generation is used version of  FairShip located on: 
+https://github.com/Plamenna/FairShip/tree/shipSoft
+
+Files located on my eos:/eos/experiment/ship/user/pvenkova/MuonProduction2018/MuonBackCavern
+
+
+===========================================================================================================================================
+
+1. make_ntupleCavern.py			      : script to produce ntulple with x,y,z,Px,Py,Pz,w  of  muons hitting the Cavern with Momentum cut< 3GeV/c and position at z in the cavern < 35m 
+
+2.muonsCavern2018.0-66000.root 		      : ntuple with muons hitting the Cavern  with Momentum cut< 3GeV/c and position at z in the cavern < 35m 
+
+3.ship.conical.MuonBack-TGeant4_*_*.root      : FairShip Simulation: -- followMuon --fastMuon( the cave is sensitive,folow only muons);where the geometry is the 2018 design ( dy':10.,'dv':6,'ds':9,'nud':3,'caloDesign':3,'strawDesign':10)
+
+4.anaCavern.sh                : script to run Batch Jobs, for collection muons hitting the cavern, used to produce the ntuple muonsCavern2018.0-66000.root 
+
+3. makeMuonDIS.py			      : script to generate muonDIS interaction with Pythia using the muons hitting the Tr 1 
+4. muonDis_Tr1.root			      : 445 000 muonDIS interactions ( 445muons*10 000 interactions)
+5. muonDis_*.root			      : the same content like muonsDis_Tr1.root splited on 89 jobs. Each file contains 5muons*10 000 interactions
+6. run_simScript.py			      : need it to run FairSHiP simulation, taking as inputFile muonDis_Tr1.root, where the geometry is the 2018 design ( dy':10.,'dv':6,'ds':9,'nud':3,'caloDesign':3,'strawDesign':10)  and the DIS event is placed beetwen the begining of the Vessel until the Tr1, along the muon track according to the material density. 
+7. ship.conical.muonDIS-TGeant4_*.root	      : outputFile from FairSHiP simulation of muonDIS interactions (89 files, 50 000 events in file)
+8. ship.conical.muonDIS-TGeant4_*_rec.root    : Reconstructed data (89 files, 50 000 events in file)
+9. geofile_full.conical.MuonBack-TGeant4.root : file contain the geometry
+10.makeDISTr1.sh                              : bash script to run Job Array to generate with Pythia6 muonDIS interactions 
+11.simDISTr1.sh                               : bash script to run Job Array to run FairShip simulation
+12.recDISTr1.sh                               : bash script to run Job Array to reconstruct 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+1.Run fastMuon Background simulation, no EM background, the geometry is the new 2018 layout, using as inputFile the new background Production 2018, located on:
+/eos/experiment/ship/data/Mbias/background-prod-2018/pythia8_Geant4_10.0_withCharmandBeauty${NF}_mu.root ( mixture of Charm, Beauty and Mbias)  (67 files, $NF=[0,1000,...,66000] ) ~ 6e+10 p.o.t. 
+
+use simCavern.sh to run Batch JObs to run the simulation.
+
+
+The output File of the simulation is : 
+/eos/experiment/ship/user/pvenkova/MuonProduction2018/MuonBackCavern/ship.conical.MuonBack-TGeant4_X_Y.root
+for X=[0,1000,...,4000] Y=[1,2,....,100]
+for X=[5000,..,66000]   Y=[1,2,.,6]
+together with the geometry file
+/eos/experiment/ship/user/pvenkova/MuonProduction2018/MuonBackCavern/geofile_full.conical.MuonBack-TGeant4.root
+
+ 
+For more details of layout 2018 and the new Production , see : https://indico.cern.ch/event/705102/contributions/2918693/attachments/1617059/2570494/Ship-Soft-Status-March-2018.pdf
+
+2. From the MuonBackCavern/ship.conical.MuonBack-TGeant4_X_Y.root select muons hitting the cavern with P>3GeV/c, Zposition at cavern< 35m 
+and save them in the ntuple : 
+
+/eos/experiment/ship/user/pvenkova/MuonProduction2018/MuonBackCavern/muonsCavern2018.0-66000.root 	
+
+use anaCavern.sh to run Batch Jobs   
+
+
+3.Generate muon DIS events using inputFile muonsCavern2018.0-66000.root(contains 4,2e+7 muons) : 
+
+
+
+
+
+
