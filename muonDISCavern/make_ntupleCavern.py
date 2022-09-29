@@ -32,11 +32,13 @@ xyz=r.TH3D('xyz',"XYZ position of muons with 3GeV momentum cut in the cavern", 1
 parser.add_argument(
 	'-f',
 	'--inputFile',
+	required=True,
 	 help='''Input file to use. ''')
 
 parser.add_argument(
 	'-g',
 	'--geoFile',
+	required=True,
 	 help='''GeoFile file to use. ''')
 
 
@@ -82,11 +84,11 @@ for event in tree:
 
 
 
-     	for hit in event.vetoPoint:
-                pid = hit.PdgCode()
+	for hit in event.vetoPoint:
+		pid = hit.PdgCode()
 		trackID=hit.GetTrackID()
 		name= (sGeo.FindNode(hit.GetX(),hit.GetY(),hit.GetZ())).GetName()
-		if name in 'rockD_1' and abs(pid)==13 :
+		if name in 'Cavern_1' and abs(pid)==13 :
 			P = r.TMath.Sqrt(hit.GetPx()**2 + hit.GetPy()**2 + hit.GetPz()**2)
 			#print "Track ID is=", trackID, "The particle is=",tree.MCTrack[trackID].GetPdgCode(), "The weight is=", tree.MCTrack[trackID].GetWeight()
 			hPCavern.Fill(P,tree.MCTrack[trackID].GetWeight())
